@@ -1,0 +1,61 @@
+<%- include('header'); %>
+
+<!-- Publish new blog post -->
+<div>
+  <form action="/posts" method="post">
+    <div class="container mb-4">
+      <h4>Publish Something</h4>
+      <input
+        id="floatingInput"
+        placeholder="Title"
+        type="text"
+        name="title"
+        autocomplete="off"
+      />
+
+      <input
+        class="w-75"
+        type="text"
+        placeholder="Content"
+        name="content"
+        autocomplete="off"
+      />
+      <button class="btn btn-secondary btn-sm" type="submit">Publish</button>
+    </div>
+  </form>
+</div>
+
+<!-- List of blog posts  -->
+<ul>
+  <% blogPosts.forEach((item,index) => { %>
+  <li>
+    <div class="px-5 py-1 mb-2 bg-body-tertiary rounded-3 container">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold"><%= item.title %></h1>
+        <p class="col-md-8 fs-4"><%= item.content %></p>
+        <form action="/posts/<%= item.id %>" method="post">
+            <button class="btn btn-primary btn-lg" type="submit" name=<%= item.id %>>delete</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  <% }) %>
+</ul>
+
+
+<script>
+    // Delete a blog post
+  function deletePost(id) {
+    console.log(id);
+    fetch(`/posts/${id}`, { method: 'DELETE' })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
+  }
+
+</script>
+<%- include('footer'); %>
+
+
